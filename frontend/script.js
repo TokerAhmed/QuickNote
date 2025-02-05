@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", loadNotes);
 
 // Add event listener to the button using its ID
 document.getElementById("addNoteButton").addEventListener("click", addNote);
+document.getElementById("searchButton").addEventListener("click", searchNotes);
 
+//Loading notes 
 async function loadNotes() {
     try {
         const response = await fetch("http://localhost:5000/notes");
@@ -13,11 +15,12 @@ async function loadNotes() {
     }
 }
 
+//adding notes
 async function addNote() {
     const noteText = document.getElementById("noteText").value;
     if (!noteText.trim()) return;
 
-    const note = { text: noteText, color: "white" }; // Fixed note color to white
+    const note = { text: noteText, color: "skyblue" }; // Fixed note color to skyblue
     
     try {
         const response = await fetch("http://localhost:5000/notes", {
@@ -40,6 +43,20 @@ async function deleteNote(id) {
         document.getElementById(id)?.remove();
     } catch (error) {
         console.error("Error deleting note:", error);
+    }
+}
+
+// Searching notes
+async function searchNotes() {
+    const searchQuery = document.getElementById("searchQuery").value;
+    if (!searchQuery) return;
+
+    try {
+        const response = await fetch(`http://localhost:5000/notes/search?q=${searchQuery}`);
+        const notes = await response.json();
+        displayNotes(notes);
+    } catch (error) {
+        console.error("Error searching notes:", error);
     }
 }
 

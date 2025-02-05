@@ -8,10 +8,14 @@
 </head>
 <body>
     <h1>QuickNote</h1>
+    <div class="search-container">
+        <input type="text" id="searchQuery" placeholder="Search notes">
+        <button id="searchButton">Search</button>
+    </div>
     <h2>Write and Save your note!</h2>
     <div class="note-input">
         <textarea id="noteText" placeholder="Enter your note"></textarea>
-        <button id="addNoteButton">+</button> <!-- Removed onclick attribute -->
+        <button id="addNoteButton">Save</button>
     </div>
     <div id="notesContainer"></div>
     <script src="script.js"></script>
