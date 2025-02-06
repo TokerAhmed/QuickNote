@@ -40,6 +40,9 @@ app.get("/notes", (req, res) => {
 
 app.get("/notes/search", (req, res) => {
   const searchQuery = req.query.q;
+  if (!searchQuery) {
+    return res.status(400).json({ error: "Search query is required" });
+  }
   const query = "SELECT * FROM notes WHERE text LIKE ?";
   db.query(query, [`%${searchQuery}%`], (err, results) => {
       if (err) return res.status(500).json({ error: err.message });
@@ -62,6 +65,17 @@ app.post("/notes", (req, res) => {
 
         const newNote = { id: result.insertId, text, color };
         res.json(newNote);
+    });
+});
+
+// Update a note
+app.put("/notes/:id", (req, res) => {
+    const noteId = req.params.id;
+    const newText = req.body.text;
+    const query = "UPDATE notes SET text = ? WHERE id = ?";
+    db.query(query, [newText, noteId], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ id: noteId, text: newText });
     });
 });
 
